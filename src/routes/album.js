@@ -1,7 +1,6 @@
 import AlbumController from "../controllers/album.controller.js";
 import auth from "../middlewares/auth.middleware.js";
-
-const express = require("express");
+import express from "express";
 
 const router = express.Router();
 
