@@ -2,14 +2,13 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 dotenv.config();
-const { MONGO_USER, MONGO_PASSWORD, MONGO_PATH, MONGO_DB } = process.env;
-
+const { MONGO_USER, MONGO_PASSWORD, MONGO_PATH, MONGO_DB, MONGO_DB_APP_NAME } =
+  process.env;
+console.log(
+  `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}/${MONGO_DB}`
+);
 const connection = mongoose.connect(
-  `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}/${MONGO_DB}`,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
+  `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}/${MONGO_DB}`
 );
 
 export default connection;

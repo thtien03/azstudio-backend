@@ -1,8 +1,7 @@
 import multer from "multer";
 import UploadController from "../controllers/upload.controller.js";
 import auth from "../middlewares/auth.middleware.js";
-
-const express = require("express");
+import express from "express";
 
 const router = express.Router();
 

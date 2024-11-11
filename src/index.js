@@ -1,23 +1,25 @@
-import connection from "./src/database/connection.js";
-import projectRouter from "./src/routes/album.js";
-import fileRouter from "./src/routes/upload.js";
-import userRouter from "./src/routes/user.js";
+import connection from "./database/connection.js";
+import projectRouter from "./routes/album.js";
+import fileRouter from "./routes/upload.js";
+import userRouter from "./routes/user.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import express from "express";
+import bodyParser from "body-parser";
+import dotenv from "dotenv";
 
-const express = require("express");
-const body = require("body-parser");
-require("dotenv").config();
+dotenv.config();
 
 async function start() {
   try {
     const { PORT } = process.env;
     const app = express();
+    app.use(bodyParser.json());
     app.set("trust proxy", 1);
     app.use(cors());
     app.use(express.json());
-    app.use(body.json({ limit: "100mb" }));
-    app.use(body.urlencoded({ limit: "100mb", extended: true }));
+    app.use(express.json({ limit: "100mb" }));
+    app.use(express.urlencoded({ limit: "100mb", extended: true }));
     app.use(cookieParser());
 
     // Routes
