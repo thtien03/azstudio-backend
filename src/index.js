@@ -1,7 +1,9 @@
 import connection from "./database/connection.js";
-import projectRouter from "./routes/album.js";
-import fileRouter from "./routes/upload.js";
-import userRouter from "./routes/user.js";
+import projectRouter from "./routes/album.routes.js";
+import fileRouter from "./routes/upload.routes.js";
+import userRouter from "./routes/user.routes.js";
+import categoryRouter from "./routes/category.routes.js";
+import productRouter from "./routes/product.routes.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import express from "express";
@@ -26,6 +28,8 @@ async function start() {
     app.use("/api/v1/album", projectRouter);
     app.use("/api/v1/file", fileRouter);
     app.use("/api/v1/user", userRouter);
+    app.use("/api/v1/category", categoryRouter);
+    app.use("/api/v1/product", productRouter);
 
     app.get("/", (req, res) => {
       res.send("Welcome to backend web!");
