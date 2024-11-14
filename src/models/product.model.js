@@ -17,6 +17,12 @@ const ProductSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    type: {
+      type: String,
+      enum: ["portfolio", "product"],
+      required: true,
+    },
+    bannerImage: String,
   },
   {
     timestamps: true,

@@ -1,9 +1,5 @@
 import connection from "./database/connection.js";
-import projectRouter from "./router/album.routes.js";
-import fileRouter from "./router/upload.routes.js";
-import userRouter from "./router/user.routes.js";
-import categoryRouter from "./router/category.routes.js";
-import productRouter from "./router/product.routes.js";
+import * as routes from "./router/index.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import express from "express";
@@ -32,11 +28,13 @@ async function start() {
     app.use(cookieParser());
 
     // Routes
-    app.use("/api/v1/album", projectRouter);
-    app.use("/api/v1/file", fileRouter);
-    app.use("/api/v1/user", userRouter);
-    app.use("/api/v1/category", categoryRouter);
-    app.use("/api/v1/product", productRouter);
+    app.use("/api/v1/album", routes.albumRouter);
+    app.use("/api/v1/file", routes.uploadRouter);
+    app.use("/api/v1/user", routes.userRouter);
+    app.use("/api/v1/category", routes.categoryRouter);
+    app.use("/api/v1/product", routes.productRouter);
+    app.use("/api/v1/service", routes.serviceRouter);
+    app.use("/api/v1/appointment", routes.appointmentRouter);
 
     app.use(
       "/api/v1/swagger",

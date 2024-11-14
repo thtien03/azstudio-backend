@@ -10,6 +10,11 @@ const CategorySchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    type: {
+      type: String,
+      enum: ["portfolio", "product"],
+      required: true,
+    },
     // image: {
     //   type: String,
     // },
