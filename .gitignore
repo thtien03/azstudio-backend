@@ -1,4 +1,4 @@
 dist
-# .env
+.env
 yarn.lock
 node_modules
