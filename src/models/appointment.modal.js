@@ -18,7 +18,7 @@ const AppointmentSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    service: {
+    serviceId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "services", // Tham chiếu đến `ServiceModel`
       required: true,
