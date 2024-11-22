@@ -9,4 +9,6 @@ router.get("/logout", UserController.logout);
 
 router.get("/refresh_token", UserController.getAccessToken);
 
+router.post("/register", UserController.register);
+
 export default router;
