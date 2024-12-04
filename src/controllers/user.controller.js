@@ -1,7 +1,6 @@
-import express from "express";
-import UserModel from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import UserModel from "../models/user.model.js";
 
 class UserController {
   login = async (request, response) => {
@@ -12,6 +11,10 @@ class UserController {
         return response
           .status(400)
           .json({ message: "This username does not exist." });
+      if (user.status !== "active")
+        return response
+          .status(403)
+          .json({ message: "User is not active. Please contact support." });
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch)
@@ -28,9 +31,11 @@ class UserController {
         secure: process.env.NODE_ENV === "production" ? true : false,
       });
 
-      response
-        .status(200)
-        .json({ accessToken: access_token, message: "Login successfully." });
+      response.status(200).json({
+        accessToken: access_token,
+        isAdmin: user.isAdmin,
+        message: "Login successfully.",
+      });
     } catch (error) {
       response.status(500).json({ message: error.message });
     }
@@ -78,7 +83,7 @@ class UserController {
   register = async (request, response) => {
     try {
       const { name, username, email, password } = request.body;
-
+      console.log(request.body);
       // Kiểm tra nếu các trường cần thiết bị thiếu
       if (!name || !username || !email || !password) {
         return response
@@ -124,6 +129,39 @@ class UserController {
       return response
         .status(500)
         .json({ message: "An error occurred. Please try again later." });
+    }
+  };
+
+  blockUser = async (request, response) => {
+    try {
+      // Lấy userId từ tham số URL (ví dụ: /user/block/:userId)
+      const { userId } = request.params;
+
+      // Tìm người dùng trong cơ sở dữ liệu
+      const user = await UserModel.findById(userId);
+
+      // Kiểm tra nếu người dùng không tồn tại
+      if (!user) {
+        return response.status(404).json({ message: "User not found" });
+      }
+
+      // Toggle user status
+      if (user.status === "inactive") {
+        user.status = "active";
+        await user.save();
+        return response
+          .status(200)
+          .json({ message: "User has been activated successfully" });
+      } else {
+        user.status = "inactive";
+        await user.save();
+        return response
+          .status(200)
+          .json({ message: "User has been blocked successfully" });
+      }
+    } catch (error) {
+      console.error(error);
+      response.status(500).json({ message: "Internal Server Error" });
     }
   };
 }

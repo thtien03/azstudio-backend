@@ -33,6 +33,13 @@ class AppointmentController {
         service: service._id,
       });
       await appointment.save();
+      // Emit a Socket.IO event
+      const io = request.app.get("socketio");
+      io.emit("newAppointment", {
+        message: "Một cuộc hẹn mới được tạo",
+        data: appointment,
+      });
+
       return response
         .status(201)
         .json({ message: "Send appointment successfully", data: appointment });
