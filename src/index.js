@@ -8,6 +8,8 @@ import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import fs from "fs";
 import YAML from "yaml";
+import { Server } from "socket.io";
+import http from "http";
 
 dotenv.config();
 
@@ -15,6 +17,8 @@ async function start() {
   try {
     const { PORT } = process.env;
     const app = express();
+    // Create an HTTP server using the Express app
+    const server = http.createServer(app);
     // Setup Swagger
     const file = fs.readFileSync("./src/doc-swagger.yaml", "utf8");
     const swaggerDocument = YAML.parse(file);
@@ -45,6 +49,15 @@ async function start() {
       res.send("Welcome to backend web!");
     });
 
+    // Initialize a new instance of Socket.IO by passing the HTTP server
+    const io = new Server(server, {
+      cors: {
+        origin: `*`, // use http://localhost:PORT or use "*" to allow all
+        methods: ["GET", "POST"], // Allow these HTTP methods
+      },
+    });
+
+    app.set("socketio", io);
     // Start server
     connection
       .then(() => {
