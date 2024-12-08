@@ -8,8 +8,8 @@ const { MONGO_USER, MONGO_PASSWORD, MONGO_PATH, MONGO_DB, MONGO_DB_APP_NAME } =
 //   `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}/${MONGO_DB}`
 // );
 const connection = mongoose.connect(
-  `mongodb://${MONGO_PATH}/${MONGO_DB}`
-  // `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}/${MONGO_DB}`
+  // `mongodb://${MONGO_PATH}/${MONGO_DB}`
+  `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}/${MONGO_DB}`
 );
 
 export default connection;
