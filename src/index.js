@@ -38,6 +38,7 @@ async function start() {
     app.use("/api/v1/category", routes.categoryRouter);
     app.use("/api/v1/product", routes.productRouter);
     app.use("/api/v1/service", routes.serviceRouter);
+    app.use("/api/v1/order", routes.orderRouter);
     app.use("/api/v1/appointment", routes.appointmentRouter);
 
     app.use(

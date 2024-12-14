@@ -3,8 +3,18 @@ import { ServiceModel } from "../models/service.model.js";
 class ServiceController {
   getAllServices = async (request, response) => {
     try {
-      const services = await ServiceModel.find();
-      return response.status(200).json({ data: services });
+      const { page = 1, pageSize = 10 } = request.query;
+      const skip = (page - 1) * pageSize;
+      const services = await ServiceModel.find()
+        .skip(skip)
+        .limit(parseInt(pageSize));
+      const totalServices = await ServiceModel.countDocuments();
+      return response.status(200).json({
+        data: services,
+        total: totalServices,
+        page: parseInt(page),
+        pageSize: parseInt(pageSize),
+      });
     } catch (error) {
       return response.status(500).json({ message: error.message });
     }

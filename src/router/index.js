@@ -5,6 +5,7 @@ import serviceRouter from "./service.routes.js";
 import uploadRouter from "./upload.routes.js";
 import userRouter from "./user.routes.js";
 import appointmentRouter from "./appointment.routes.js";
+import orderRouter from "./order.routes.js";
 
 export {
   albumRouter,
@@ -14,4 +15,5 @@ export {
   uploadRouter,
   userRouter,
   appointmentRouter,
+  orderRouter,
 };

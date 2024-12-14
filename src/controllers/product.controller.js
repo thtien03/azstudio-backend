@@ -4,8 +4,12 @@ import { CategoryModel } from "../models/category.model.js";
 class ProductController {
   getAllProducts = async (request, response) => {
     try {
+      const { page = 1, pageSize = 10 } = request.query;
+      const skip = (page - 1) * pageSize;
       const products = await ProductsModel.find()
         .populate("category", "name")
+        .skip(skip)
+        .limit(parseInt(pageSize))
         .exec();
       return response.status(200).json({ data: products });
     } catch (error) {
