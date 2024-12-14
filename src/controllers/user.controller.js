@@ -164,6 +164,32 @@ class UserController {
       response.status(500).json({ message: "Internal Server Error" });
     }
   };
+
+  listAllUsers = async (request, response) => {
+    try {
+      const { page = 1, pageSize = 10 } = request.query;
+      const skip = (page - 1) * pageSize;
+
+      const users = await UserModel.find({}, { password: 0 }) // không lấy password
+        .skip(skip)
+        .limit(Number(pageSize))
+        .exec();
+
+      const totalUsers = await UserModel.countDocuments();
+
+      return response.status(200).json({
+        data: users,
+        total: totalUsers,
+        page: Number(page),
+        pageSize: Number(pageSize),
+        totalPages: Math.ceil(totalUsers / pageSize),
+      });
+    } catch (error) {
+      return response
+        .status(500)
+        .json({ message: "Server error", error: error.message });
+    }
+  };
 }
 const createRefreshToken = (payload) =>
   jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
