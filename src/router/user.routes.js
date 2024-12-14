@@ -6,6 +6,7 @@ const router = express.Router();
 router.post("/login", UserController.login);
 
 router.get("/logout", UserController.logout);
+router.get("/", UserController.listAllUsers);
 
 router.get("/refresh_token", UserController.getAccessToken);
 
