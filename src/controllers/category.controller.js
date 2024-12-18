@@ -48,7 +48,7 @@ class CategoryController {
 
   createCategory = async (request, response) => {
     try {
-      const { name, description } = request.body;
+      const { name, description, type } = request.body;
       if (!name) {
         return res.status(400).json({ message: "Name is required" });
       }
@@ -62,6 +62,7 @@ class CategoryController {
       const category = new CategoryModel({
         name,
         description,
+        type,
       });
       await category.save();
       console.log(category);
@@ -82,7 +83,7 @@ class CategoryController {
   updateCategory = async (request, response) => {
     try {
       const { id } = request.params;
-      const { name, description } = request.body;
+      const { name, description, type } = request.body;
       // Kiểm tra xem danh mục có tồn tại không
       const category = await CategoryModel.findById(id);
       if (!category) {
@@ -100,6 +101,7 @@ class CategoryController {
       // Cập nhật danh mục
       category.name = name || category.name;
       category.description = description || category.description;
+      category.type = type || category.type;
 
       await category.save();
 
