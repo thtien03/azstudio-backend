@@ -7,7 +7,7 @@ class ProductController {
       const { page = 1, pageSize = 10 } = request.query;
       const skip = (page - 1) * pageSize;
       const products = await ProductsModel.find()
-        .populate("category", "name")
+        .populate("categoryId", "name")
         .skip(skip)
         .limit(parseInt(pageSize))
         .exec();
