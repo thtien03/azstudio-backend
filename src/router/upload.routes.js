@@ -13,10 +13,10 @@ const upload = multer({ storage, limits: { fileSize: MAX_FILE_SIZE } });
 
 router.post(
   "/upload",
-  auth,
+
   upload.array("files"),
   UploadController.uploadFiles
 );
-router.delete("/remove/:id", auth, UploadController.removeFile);
+router.delete("/remove/:id", UploadController.removeFile);
 
 export default router;

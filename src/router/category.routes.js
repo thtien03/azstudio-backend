@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.get("/", CategoryController.getAllCategories);
 router.post("/", CategoryController.createCategory);
-router.put("/:id", auth, CategoryController.updateCategory);
-router.delete("/:id", auth, CategoryController.deleteCategory);
+router.put("/:id", CategoryController.updateCategory);
+router.delete("/:id", CategoryController.deleteCategory);
 
 router.get("/:id", CategoryController.getCategory);
 

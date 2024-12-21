@@ -5,6 +5,6 @@ import AppointmentController from "../controllers/appointment.controller.js";
 const router = express.Router();
 router.get("/", AppointmentController.getListAppointments);
 router.post("/", AppointmentController.createAppointment);
-router.get("/:id", auth, AppointmentController.getAppointment);
+router.get("/:id", AppointmentController.getAppointment);
 
 export default router;
