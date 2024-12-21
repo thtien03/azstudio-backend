@@ -23,6 +23,8 @@ const ProductSchema = new mongoose.Schema(
       required: true,
     },
     bannerImage: String,
+    size: String,
+    detail: String,
   },
   {
     timestamps: true,
