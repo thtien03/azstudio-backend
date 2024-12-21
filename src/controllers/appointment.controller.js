@@ -4,7 +4,11 @@ import { ServiceModel } from "../models/service.model.js";
 class AppointmentController {
   getListAppointments = async (request, response) => {
     try {
-      const listAppointments = await AppointmentModel.find();
+      const { page = 1, pageSize = 10 } = request.query;
+      const skip = (page - 1) * pageSize;
+      const listAppointments = await AppointmentModel.find()
+        .skip(skip)
+        .limit(parseInt(pageSize));
       return response.status(200).json({ data: listAppointments });
     } catch (error) {
       return response.status(500).json({ message: error.message });
@@ -33,12 +37,12 @@ class AppointmentController {
         service: service._id,
       });
       await appointment.save();
-      // Emit a Socket.IO event
-      const io = request.app.get("socketio");
-      io.emit("newAppointment", {
-        message: "Một cuộc hẹn mới được tạo",
-        data: appointment,
-      });
+      // // Emit a Socket.IO event
+      // const io = request.app.get("socketio");
+      // io.emit("newAppointment", {
+      //   message: "Một cuộc hẹn mới được tạo",
+      //   data: appointment,
+      // });
 
       return response
         .status(201)

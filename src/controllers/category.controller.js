@@ -5,21 +5,21 @@ class CategoryController {
     try {
       // Get pagination information from query parameters (if any)
       const page = parseInt(request.query.page) || 1; // Current page, default is 1
-      const limit = parseInt(request.query.limit) || 10; // Number of items per page, default is 10
+      const pageSize = parseInt(request.query.pageSize) || 10; // Number of items per page, default is 10
 
       // Calculate offset
-      const skip = (page - 1) * limit;
+      const skip = (page - 1) * pageSize;
 
       // Query data with pagination
       const categories = await CategoryModel.find()
         .skip(skip) // Skip the number of records corresponding to the current page
-        .limit(limit); // Limit the number of records returned
+        .limit(pageSize); // Limit the number of records returned
 
       // Get the total number of records in the database
       const totalCategories = await CategoryModel.countDocuments();
 
       // Calculate the number of pages
-      const totalPages = Math.ceil(totalCategories / limit);
+      const totalPages = Math.ceil(totalCategories / pageSize);
 
       // Return the result with pagination information
       return response.status(200).json({
@@ -28,7 +28,7 @@ class CategoryController {
           currentPage: page,
           totalPages: totalPages,
           totalItems: totalCategories,
-          itemsPerPage: limit,
+          itemsPerPage: pageSize,
         },
       });
     } catch (error) {
@@ -48,7 +48,7 @@ class CategoryController {
 
   createCategory = async (request, response) => {
     try {
-      const { name, description } = request.body;
+      const { name, description, type } = request.body;
       if (!name) {
         return res.status(400).json({ message: "Name is required" });
       }
@@ -62,6 +62,7 @@ class CategoryController {
       const category = new CategoryModel({
         name,
         description,
+        type,
       });
       await category.save();
       console.log(category);
@@ -82,7 +83,7 @@ class CategoryController {
   updateCategory = async (request, response) => {
     try {
       const { id } = request.params;
-      const { name, description } = request.body;
+      const { name, description, type } = request.body;
       // Kiểm tra xem danh mục có tồn tại không
       const category = await CategoryModel.findById(id);
       if (!category) {
@@ -100,6 +101,7 @@ class CategoryController {
       // Cập nhật danh mục
       category.name = name || category.name;
       category.description = description || category.description;
+      category.type = type || category.type;
 
       await category.save();
 

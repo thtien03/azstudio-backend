@@ -2,13 +2,24 @@ import express from "express";
 import { AlbumModel } from "../models/album.model.js";
 
 class AlbumController {
-  getListAlbums = async (
-    request,
-    response
-  ) => {
+  getListAlbums = async (request, response) => {
     try {
-      const albums = await AlbumModel.find().exec();
-      return response.status(200).json({ data: albums });
+      const { page = 1, pageSize = 10 } = request.query;
+      const limit = parseInt(pageSize);
+      const skip = (parseInt(page) - 1) * limit;
+
+      const albums = await AlbumModel.find().skip(skip).limit(limit).exec();
+      const totalAlbums = await AlbumModel.countDocuments();
+
+      return response.status(200).json({
+        data: albums,
+        pagination: {
+          total: totalAlbums,
+          page: parseInt(page),
+          pageSize: limit,
+          totalPages: Math.ceil(totalAlbums / limit),
+        },
+      });
     } catch (error) {
       return response.status(500).json({ message: error.message });
     }
@@ -33,10 +44,7 @@ class AlbumController {
     }
   };
 
-  createAlbum = async (
-    request,
-    response
-  ) => {
+  createAlbum = async (request, response) => {
     try {
       const { banner, image } = request.body;
       if (!banner || !image || !Array.isArray(image)) {
@@ -61,10 +69,7 @@ class AlbumController {
     }
   };
 
-  updateAlbum = async (
-    request,
-    response
-  ) => {
+  updateAlbum = async (request, response) => {
     try {
       const { id } = request.params; // Lấy id của album từ URL params
       const { banner, image } = request.body; // Lấy dữ liệu từ request body
@@ -93,10 +98,7 @@ class AlbumController {
     }
   };
 
-  deleteAlbum = async (
-    request,
-    response
-  ) => {
+  deleteAlbum = async (request, response) => {
     try {
       const { id } = request.params; // Lấy id của album từ URL params
 
