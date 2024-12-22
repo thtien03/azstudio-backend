@@ -4,12 +4,12 @@ import auth from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
+router.get("/:id", ProductController.getProduct);
 router.get("/", ProductController.getAllProducts);
 router.get("/:categoryId", ProductController.getAllProductsByCategory);
 router.post("/", ProductController.createProduct);
 router.put("/:id", ProductController.updateProduct);
 router.delete("/:id", ProductController.deleteProduct);
 
-router.get("/:id", ProductController.getProduct);
 
 export default router;

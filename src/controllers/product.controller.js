@@ -8,8 +8,8 @@ class ProductController {
       const skip = (page - 1) * pageSize;
       const products = await ProductsModel.find()
         .populate("categoryId", "name")
-        .skip(skip)
-        .limit(parseInt(pageSize))
+          // .skip(skip)
+          // .limit(parseInt(pageSize))
         .exec();
       return response.status(200).json({ data: products });
     } catch (error) {
@@ -31,10 +31,16 @@ class ProductController {
     try {
       const { id } = request.params;
       const product = await ProductsModel.findById(id)
-        .populate("category", "name")
+        .populate("categoryId", "name") // Populate the category name
         .exec();
-      return response.status(200).json({ data: product });
+  
+      if (!product) {
+        return response.status(404).json({ message: "Product not found" });
+      }
+  
+      return response.status(200).json(product);
     } catch (error) {
+      // Handle errors
       return response.status(500).json({ message: error.message });
     }
   };

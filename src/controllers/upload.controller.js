@@ -9,6 +9,7 @@ class UploadController {
     request,
     response
   ) => {
+    console.log(CLOUDINARY_FOLDER)
     try {
       const files = request.files ;
       if (!files || !Array.isArray(files)) {
