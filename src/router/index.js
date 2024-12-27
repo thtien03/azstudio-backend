@@ -6,6 +6,7 @@ import uploadRouter from "./upload.routes.js";
 import userRouter from "./user.routes.js";
 import appointmentRouter from "./appointment.routes.js";
 import orderRouter from "./order.routes.js";
+import libraryRouter from "./libraryCustomer.routes.js";
 
 export {
   albumRouter,
@@ -16,4 +17,5 @@ export {
   userRouter,
   appointmentRouter,
   orderRouter,
+  libraryRouter,
 };

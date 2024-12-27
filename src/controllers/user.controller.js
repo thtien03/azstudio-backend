@@ -34,6 +34,7 @@ class UserController {
       response.status(200).json({
         accessToken: access_token,
         isAdmin: user.isAdmin,
+        username: user.username,
         message: "Login successfully.",
       });
     } catch (error) {

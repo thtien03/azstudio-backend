@@ -23,6 +23,11 @@ const AppointmentSchema = new mongoose.Schema(
       ref: "services", // Tham chiếu đến `ServiceModel`
       required: true,
     },
+    status: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
+    },
   },
   {
     timestamps: true,
