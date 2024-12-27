@@ -60,6 +60,7 @@ async function startServer() {
     app.use("/api/v1/appointment", routes.appointmentRouter);
     app.use("/api/v1/vnpay", vnpayRouter);
     app.use("/api/v1/discounts", discountRouter);
+    app.use("/api/v1/library", routes.libraryRouter);
 
     app.get("/", (req, res) => {
       res.send("Welcome to backend web!");
@@ -74,10 +75,30 @@ async function startServer() {
     });
     app.set("socketio", io);
 
+    // Socket.IO Logic
+    io.on("connection", (socket) => {
+      console.log(`A user connected: ${socket.id}`);
+
+      // Lắng nghe sự kiện từ client
+      socket.on("sendMessage", (data) => {
+        console.log("Message received:", data);
+
+        // Phát lại tới tất cả client khác
+        io.emit("receiveMessage", data);
+      });
+
+      // Xử lý khi client ngắt kết nối
+      socket.on("disconnect", () => {
+        console.log(`User disconnected: ${socket.id}`);
+      });
+    });
+
     // Error handling middleware
     app.use((err, req, res, next) => {
       console.error("Unexpected error:", err.message);
-      res.status(500).json({ message: "Đã xảy ra lỗi trên server", error: err.message });
+      res
+        .status(500)
+        .json({ message: "Đã xảy ra lỗi trên server", error: err.message });
     });
 
     // Start the server

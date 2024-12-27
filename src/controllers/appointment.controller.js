@@ -51,6 +51,49 @@ class AppointmentController {
       return response.status(500).json({ message: error.message });
     }
   };
+
+  approvedAppointment = async (request, response) => {
+    try {
+      const { id } = request.params;
+      const appointment = await AppointmentModel.findById(id);
+      if (!appointment) {
+        return response.status(404).json({ message: "Appointment not found" });
+      }
+      if (appointment.status !== "pending") {
+        return response
+          .status(400)
+          .json({ message: "Appointment is not pending" });
+      }
+      appointment.status = "approved";
+      await appointment.save();
+      return response
+        .status(200)
+        .json({ message: "Appointment approved", data: appointment });
+    } catch (error) {
+      return response.status(500).json({ message: error.message });
+    }
+  };
+  rejectAppointment = async (request, response) => {
+    try {
+      const { id } = request.params;
+      const appointment = await AppointmentModel.findById(id);
+      if (!appointment) {
+        return response.status(404).json({ message: "Appointment not found" });
+      }
+      if (appointment.status !== "pending") {
+        return response
+          .status(400)
+          .json({ message: "Appointment is not pending" });
+      }
+      appointment.status = "rejected";
+      await appointment.save();
+      return response
+        .status(200)
+        .json({ message: "Appointment rejected", data: appointment });
+    } catch (error) {
+      return response.status(500).json({ message: error.message });
+    }
+  };
 }
 
 export default new AppointmentController();
